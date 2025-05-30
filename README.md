@@ -44,9 +44,9 @@ One can then visit this url to use the site
 
 Team Members	
 
-Ayaan Jilani-Team Lead
-Moin Bhurani
-Mohammed Shayanuddin 
+Ayaan Jilani-Team Lead,
+Moin Bhurani,
+Mohammed Shayanuddin, 
 Usman Ansari
 
 Mentor-Ravi Theja Reddy
