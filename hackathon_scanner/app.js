@@ -387,7 +387,7 @@ app.get('/', (req, res) => {
 
 // Start server
 app.listen(port, () => {
-    console.log(`OWASP ClientScanPy server listening at http://localhost:${port}`);
+    console.log(`CodeVigil server listening at http://localhost:${port}`);
     if (!eslint) {
         console.log('Note: ESLint integration is limited due to configuration issues, but manual analysis is still functional.');
     }
