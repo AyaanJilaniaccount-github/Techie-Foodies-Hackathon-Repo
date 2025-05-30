@@ -5,24 +5,137 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Techie Foodies - CodeVigil</title>
     <style>
+        /* CSS Variables for Light Mode (Default) */
+        :root {
+            --bg-body: #f0f2f5;
+            --bg-container: #fff;
+            --text-primary: #333;
+            --text-secondary: #555;
+            --text-detail: #444;
+            --text-muted: #777;
+            --border-main: #c0c0c0;
+            --border-top-section: #eee;
+            --bg-textarea: #fdfdfd;
+            --shadow-container: 0 6px 20px rgba(0,0,0,0.08);
+            --shadow-textarea-inset: inset 0 1px 3px rgba(0,0,0,0.05);
+            --border-item: #e0e0e0;
+            --bg-item: #ffffff;
+            --shadow-item: 0 2px 8px rgba(0,0,0,0.04);
+            --bg-code-pre: #e9ecef;
+            --border-code-pre: #dee2e6;
+            --bg-no-findings: #d4edda;
+            --border-no-findings: #c3e6cb;
+            --color-no-findings: #155724;
+            --bg-error-message: #f8d7da;
+            --border-error-message: #f5c6cb;
+            --color-error-message: #721c24;
+            --border-dompurify-top: #ddd;
+            --bg-code-box: #f8f9fa;
+            --border-code-box: #e9ecef;
+            --bg-example-section: #f8f9fa;
+            --border-example-section: #e9ecef;
+            --border-team-info: #eee;
+            --color-team-info: #888;
+
+            /* Action Colors */
+            --color-heading-primary: #0056b3;
+            --color-button-bg: #007bff;
+            --color-button-text: white;
+            --color-button-hover: #0056b3;
+            --color-button-disabled: #6c757d;
+            --color-loading: #007bff;
+            --color-dompurify-heading: #28a745;
+            --color-codebox-heading: #007bff;
+            --color-example-button-bg: #6c757d;
+            --color-example-button-hover: #545b62;
+
+            /* Severity Colors */
+            --color-high: #dc3545;
+            --color-medium: #ffc107;
+            --color-low: #17a2b8;
+            --color-error-item: #6c757d;
+
+            /* Dark mode specific for toggle button */
+            --toggle-button-bg: #007bff;
+            --toggle-button-text: white;
+            --toggle-button-hover: #0056b3;
+        }
+
+        /* Dark Mode Overrides (applied when body has 'dark-mode' class) */
+        body.dark-mode {
+            --bg-body: #1a1a1a;
+            --bg-container: #2c2c2c;
+            --text-primary: #e0e0e0;
+            --text-secondary: #bbb;
+            --text-detail: #ccc;
+            --text-muted: #aaa;
+            --border-main: #555;
+            --border-top-section: #444;
+            --bg-textarea: #3a3a3a;
+            --shadow-container: 0 6px 20px rgba(0,0,0,0.4);
+            --shadow-textarea-inset: inset 0 1px 3px rgba(0,0,0,0.2);
+            --border-item: #444;
+            --bg-item: #333;
+            --shadow-item: 0 2px 8px rgba(0,0,0,0.2);
+            --bg-code-pre: #222;
+            --border-code-pre: #444;
+            --bg-no-findings: #28a74533;
+            --border-no-findings: #218838;
+            --color-no-findings: #d4edda;
+            --bg-error-message: #dc354533;
+            --border-error-message: #c82333;
+            --color-error-message: #f8d7da;
+            --border-dompurify-top: #444;
+            --bg-code-box: #333;
+            --border-code-box: #444;
+            --bg-example-section: #333;
+            --border-example-section: #444;
+            --border-team-info: #444;
+            --color-team-info: #aaa;
+
+            /* Adjusted Action Colors for Dark Mode */
+            --color-heading-primary: #66b3ff;
+            --color-button-bg: #4a90d9;
+            --color-button-hover: #3a7bc0;
+            --color-loading: #66b3ff;
+            --color-dompurify-heading: #72d689;
+            --color-codebox-heading: #82caff;
+            --color-example-button-bg: #555;
+            --color-example-button-hover: #777;
+
+            /* Adjusted Severity Colors for Dark Mode Contrast */
+            --color-high: #ff6b6b;
+            --color-medium: #ffd700;
+            --color-low: #6bd7ff;
+            --color-error-item: #999;
+
+            /* Toggle button colors in dark mode */
+            --toggle-button-bg: #6c757d;
+            --toggle-button-text: white;
+            --toggle-button-hover: #545b62;
+        }
+
+        /* General Styling using Variables */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 20px;
-            background-color: #f0f2f5;
-            color: #333;
+            background-color: var(--bg-body);
+            color: var(--text-primary);
             line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
         }
         .container {
             max-width: 960px;
             margin: 20px auto;
-            background-color: #fff;
+            background-color: var(--bg-container);
             padding: 30px 40px;
             border-radius: 12px;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+            box-shadow: var(--shadow-container);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
         }
         h1, h2 {
-            color: #0056b3;
+            color: var(--color-heading-primary);
             text-align: center;
             margin-bottom: 25px;
         }
@@ -33,25 +146,27 @@
         p {
             margin-bottom: 15px;
             text-align: center;
-            color: #555;
+            color: var(--text-secondary);
+            font-size: 1.0em;
         }
         textarea {
             width: 100%;
             height: 300px;
             padding: 15px;
             margin-bottom: 20px;
-            border: 1px solid #c0c0c0;
+            border: 1px solid var(--border-main);
             border-radius: 8px;
             font-family: 'Fira Code', 'Courier New', monospace;
             font-size: 14px;
             box-sizing: border-box;
             resize: vertical;
-            background-color: #fdfdfd;
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+            background-color: var(--bg-textarea);
+            box-shadow: var(--shadow-textarea-inset);
+            transition: background-color 0.3s ease, border-color 0.3s ease; /* Smooth transition */
         }
         button {
-            background-color: #007bff;
-            color: white;
+            background-color: var(--color-button-bg);
+            color: var(--color-button-text);
             padding: 12px 30px;
             border: none;
             border-radius: 8px;
@@ -63,23 +178,24 @@
             margin: 0 auto 30px auto;
         }
         button:hover {
-            background-color: #0056b3;
+            background-color: var(--color-button-hover);
             transform: translateY(-2px);
         }
         button:active {
             transform: translateY(0);
         }
         button:disabled {
-            background-color: #6c757d;
+            background-color: var(--color-button-disabled);
             cursor: not-allowed;
             transform: none;
         }
 
         /* Results Styling */
         #results {
-            border-top: 2px solid #eee;
+            border-top: 2px solid var(--border-top-section);
             padding-top: 30px;
             margin-top: 30px;
+            transition: border-color 0.3s ease; /* Smooth transition */
         }
         .findings-list {
             list-style: none;
@@ -87,130 +203,138 @@
             margin: 0;
         }
         .finding-item {
-            background-color: #ffffff;
-            border: 1px solid #e0e0e0;
+            background-color: var(--bg-item);
+            border: 1px solid var(--border-item);
             border-left: 6px solid;
             border-radius: 8px;
             padding: 15px 20px;
             margin-bottom: 15px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-            transition: transform 0.2s ease;
+            box-shadow: var(--shadow-item);
+            transition: transform 0.2s ease, background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
         }
         .finding-item:hover {
             transform: translateY(-3px);
         }
-        .finding-item.high { border-left-color: #dc3545; }
-        .finding-item.medium { border-left-color: #ffc107; }
-        .finding-item.low { border-left-color: #17a2b8; }
-        .finding-item.error { border-left-color: #6c757d; }
+        .finding-item.high { border-left-color: var(--color-high); }
+        .finding-item.medium { border-left-color: var(--color-medium); }
+        .finding-item.low { border-left-color: var(--color-low); }
+        .finding-item.error { border-left-color: var(--color-error-item); }
 
         .finding-item h3 {
             margin-top: 0;
             font-size: 1.2em;
-            color: #222;
+            color: var(--text-primary);
             margin-bottom: 8px;
         }
         .finding-item p {
             text-align: left;
             margin-bottom: 5px;
-            color: #444;
+            color: var(--text-detail);
             font-size: 0.95em;
         }
         .finding-item pre {
-            background-color: #e9ecef;
+            background-color: var(--bg-code-pre);
             padding: 10px;
             border-radius: 5px;
             overflow-x: auto;
             font-size: 0.85em;
             white-space: pre-wrap;
             word-wrap: break-word;
-            border: 1px solid #dee2e6;
+            border: 1px solid var(--border-code-pre);
             margin-top: 10px;
             max-height: 200px;
             overflow-y: auto;
+            transition: background-color 0.3s ease, border-color 0.3s ease; /* Smooth transition */
         }
         .no-findings {
-            background-color: #d4edda;
-            border: 1px solid #c3e6cb;
-            color: #155724;
+            background-color: var(--bg-no-findings);
+            border: 1px solid var(--border-no-findings);
+            color: var(--color-no-findings);
             padding: 15px;
             border-radius: 8px;
             text-align: center;
             font-weight: 500;
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease; /* Smooth transition */
         }
 
         /* Loading indicator */
         .loading {
             text-align: center;
-            color: #007bff;
+            color: var(--color-loading);
             font-style: italic;
         }
 
         /* Error message */
         .error-message {
-            background-color: #f8d7da;
-            border: 1px solid #f5c6cb;
-            color: #721c24;
+            background-color: var(--bg-error-message);
+            border: 1px solid var(--border-error-message);
+            color: var(--color-error-message);
             padding: 15px;
             border-radius: 8px;
             text-align: center;
             margin: 20px 0;
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease; /* Smooth transition */
         }
 
         /* DOMPurify Demo Styling */
         .dompurify-demo {
             margin-top: 40px;
             padding-top: 30px;
-            border-top: 1px dashed #ddd;
+            border-top: 1px dashed var(--border-dompurify-top);
+            transition: border-color 0.3s ease; /* Smooth transition */
         }
         .dompurify-demo h2 {
             margin-bottom: 20px;
-            color: #28a745;
+            color: var(--color-dompurify-heading);
         }
         .code-box {
-            background-color: #f8f9fa;
-            border: 1px solid #e9ecef;
+            background-color: var(--bg-code-box);
+            border: 1px solid var(--border-code-box);
             border-radius: 8px;
             padding: 15px;
             margin-bottom: 20px;
+            transition: background-color 0.3s ease, border-color 0.3s ease; /* Smooth transition */
         }
         .code-box h4 {
             margin-top: 0;
-            color: #007bff;
+            color: var(--color-codebox-heading);
             margin-bottom: 10px;
         }
         .code-box pre {
-            background-color: #e2e6ea;
+            background-color: var(--bg-code-pre);
             padding: 10px;
             border-radius: 5px;
             overflow-x: auto;
             white-space: pre-wrap;
             word-wrap: break-word;
+            transition: background-color 0.3s ease; /* Smooth transition */
         }
 
         .team-info {
             margin-top: 50px;
             font-size: 0.85em;
             text-align: center;
-            color: #888;
+            color: var(--color-team-info);
             padding-top: 20px;
-            border-top: 1px solid #eee;
+            border-top: 1px solid var(--border-team-info);
+            transition: border-color 0.3s ease, color 0.3s ease; /* Smooth transition */
         }
 
         /* Example section */
         .examples {
             margin: 30px 0;
             padding: 20px;
-            background-color: #f8f9fa;
+            background-color: var(--bg-example-section);
             border-radius: 8px;
-            border: 1px solid #e9ecef;
+            border: 1px solid var(--border-example-section);
+            transition: background-color 0.3s ease, border-color 0.3s ease; /* Smooth transition */
         }
         .examples h3 {
-            color: #0056b3;
+            color: var(--color-heading-primary);
             margin-top: 0;
         }
         .example-button {
-            background-color: #6c757d;
+            background-color: var(--color-example-button-bg);
             color: white;
             padding: 8px 15px;
             border: none;
@@ -221,13 +345,37 @@
             transition: background-color 0.3s ease;
         }
         .example-button:hover {
-            background-color: #545b62;
+            background-color: var(--color-example-button-hover);
+        }
+
+        /* Dark Mode Toggle Button Specific Styling */
+        #darkModeToggle {
+            position: absolute; /* Or fixed, depending on desired position */
+            top: 20px;
+            right: 20px;
+            padding: 8px 15px;
+            background-color: var(--toggle-button-bg);
+            color: var(--toggle-button-text);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 1000; /* Ensure it's above other content */
+        }
+        #darkModeToggle:hover {
+            background-color: var(--toggle-button-hover);
+            transform: translateY(-1px);
+        }
+        #darkModeToggle:active {
+            transform: translateY(0);
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Techie Foodies Presents: CodeVigil</h1>
+        <button id="darkModeToggle">Toggle Dark Mode</button> <h1>Techie Foodies Presents: CodeVigil</h1>
         <p>Your simple static analyzer for HTML & JavaScript client-side vulnerabilities.</p>
         <p>Paste your HTML or JavaScript code snippet below to scan for common OWASP Top 10 client-side issues.</p>
 
@@ -251,6 +399,33 @@
     </div>
 
     <script>
+        // --- Dark Mode Toggle Logic (NEW) ---
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const body = document.body;
+        const currentTheme = localStorage.getItem('theme'); // Get saved theme
+
+        // Apply saved theme on load, or default to light
+        if (currentTheme) {
+            body.classList.add(currentTheme);
+            darkModeToggle.textContent = currentTheme === 'dark-mode' ? 'Switch to Light Mode' : 'Switch to Dark Mode';
+        } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            // If no saved preference, check system preference
+            body.classList.add('dark-mode');
+            darkModeToggle.textContent = 'Switch to Light Mode';
+        } else {
+            darkModeToggle.textContent = 'Switch to Dark Mode';
+        }
+
+
+        // Toggle function
+        darkModeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            const newTheme = body.classList.contains('dark-mode') ? 'dark-mode' : '';
+            localStorage.setItem('theme', newTheme); // Save preference
+            darkModeToggle.textContent = newTheme === 'dark-mode' ? 'Switch to Light Mode' : 'Switch to Dark Mode';
+        });
+
+        // --- Existing CodeVigil Logic ---
         const examples = {
             xss: `&lt;html&gt;
 &lt;body&gt;
@@ -362,7 +537,7 @@ var allCookies = document.cookie;`
                         <pre>${escapeHtml(finding.code_snippet || 'N/A')}</pre>`;
                     
                     if (finding.ruleId) {
-                        itemHTML += `<p style="font-size:0.8em; color:#777;">ESLint Rule: ${finding.ruleId}</p>`;
+                        itemHTML += `<p style="font-size:0.8em; color:var(--text-muted);">ESLint Rule: ${finding.ruleId}</p>`;
                     }
                     
                     listItem.innerHTML = itemHTML;
