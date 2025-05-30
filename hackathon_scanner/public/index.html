@@ -147,7 +147,7 @@
             margin-bottom: 15px;
             text-align: center;
             color: var(--text-secondary);
-            font-size: 1.0em;
+            font-size: 1.0em; /* Ensure this is not overwritten by .finding-item p */
         }
         textarea {
             width: 100%;
@@ -162,7 +162,8 @@
             resize: vertical;
             background-color: var(--bg-textarea);
             box-shadow: var(--shadow-textarea-inset);
-            transition: background-color 0.3s ease, border-color 0.3s ease; /* Smooth transition */
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease; /* Added color transition */
+            color: var(--text-primary) !important; /* FIXED: Added !important here */
         }
         button {
             background-color: var(--color-button-bg);
@@ -350,7 +351,7 @@
 
         /* Dark Mode Toggle Button Specific Styling */
         #darkModeToggle {
-            position: absolute; /* Or fixed, depending on desired position */
+            position: absolute;
             top: 20px;
             right: 20px;
             padding: 8px 15px;
@@ -362,7 +363,7 @@
             font-size: 0.9em;
             transition: background-color 0.3s ease, transform 0.2s ease;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            z-index: 1000; /* Ensure it's above other content */
+            z-index: 1000;
         }
         #darkModeToggle:hover {
             background-color: var(--toggle-button-hover);
@@ -375,7 +376,9 @@
 </head>
 <body>
     <div class="container">
-        <button id="darkModeToggle">Toggle Dark Mode</button> <h1>Techie Foodies Presents: CodeVigil</h1>
+        <button id="darkModeToggle">Toggle Dark Mode</button>
+
+        <h1>Techie Foodies Presents: CodeVigil</h1>
         <p>Your simple static analyzer for HTML & JavaScript client-side vulnerabilities.</p>
         <p>Paste your HTML or JavaScript code snippet below to scan for common OWASP Top 10 client-side issues.</p>
 
@@ -399,7 +402,7 @@
     </div>
 
     <script>
-        // --- Dark Mode Toggle Logic (NEW) ---
+        // --- Dark Mode Toggle Logic ---
         const darkModeToggle = document.getElementById('darkModeToggle');
         const body = document.body;
         const currentTheme = localStorage.getItem('theme'); // Get saved theme
