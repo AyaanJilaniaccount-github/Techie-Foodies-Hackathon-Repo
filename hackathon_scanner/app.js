@@ -211,7 +211,7 @@ async function analyzeCodeSnippet(codeSnippet) {
                     type: "Scanner Warning",
                     detail: `ESLint analysis encountered an issue: ${eslintError.message}`,
                     severity: "Low",
-                    code_snippet: "ESLint analysis failed"e
+                    code_snippet: "ESLint analysis failed"
                 });
             }
         }
