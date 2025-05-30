@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Techie Foodies - OWASP ClientScanPy</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 960px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+        }
+        h1, h2 {
+            color: #0056b3;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+        }
+        p {
+            margin-bottom: 15px;
+            text-align: center;
+            color: #555;
+        }
+        textarea {
+            width: 100%;
+            height: 300px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #c0c0c0;
+            border-radius: 8px;
+            font-family: 'Fira Code', 'Courier New', monospace;
+            font-size: 14px;
+            box-sizing: border-box;
+            resize: vertical;
+            background-color: #fdfdfd;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            display: block;
+            margin: 0 auto 30px auto;
+        }
+        button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+        button:active {
+            transform: translateY(0);
+        }
+        button:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Results Styling */
+        #results {
+            border-top: 2px solid #eee;
+            padding-top: 30px;
+            margin-top: 30px;
+        }
+        .findings-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .finding-item {
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-left: 6px solid;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            transition: transform 0.2s ease;
+        }
+        .finding-item:hover {
+            transform: translateY(-3px);
+        }
+        .finding-item.high { border-left-color: #dc3545; }
+        .finding-item.medium { border-left-color: #ffc107; }
+        .finding-item.low { border-left-color: #17a2b8; }
+        .finding-item.error { border-left-color: #6c757d; }
+
+        .finding-item h3 {
+            margin-top: 0;
+            font-size: 1.2em;
+            color: #222;
+            margin-bottom: 8px;
+        }
+        .finding-item p {
+            text-align: left;
+            margin-bottom: 5px;
+            color: #444;
+            font-size: 0.95em;
+        }
+        .finding-item pre {
+            background-color: #e9ecef;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 0.85em;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            border: 1px solid #dee2e6;
+            margin-top: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .no-findings {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        /* Loading indicator */
+        .loading {
+            text-align: center;
+            color: #007bff;
+            font-style: italic;
+        }
+
+        /* Error message */
+        .error-message {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        /* DOMPurify Demo Styling */
+        .dompurify-demo {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px dashed #ddd;
+        }
+        .dompurify-demo h2 {
+            margin-bottom: 20px;
+            color: #28a745;
+        }
+        .code-box {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .code-box h4 {
+            margin-top: 0;
+            color: #007bff;
+            margin-bottom: 10px;
+        }
+        .code-box pre {
+            background-color: #e2e6ea;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .team-info {
+            margin-top: 50px;
+            font-size: 0.85em;
+            text-align: center;
+            color: #888;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        /* Example section */
+        .examples {
+            margin: 30px 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+        }
+        .examples h3 {
+            color: #0056b3;
+            margin-top: 0;
+        }
+        .example-button {
+            background-color: #6c757d;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            margin: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .example-button:hover {
+            background-color: #545b62;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Techie Foodies Presents: OWASP ClientScanPy</h1>
+        <p>Your simple static analyzer for HTML & JavaScript client-side vulnerabilities.</p>
+        <p>Paste your HTML or JavaScript code snippet below to scan for common OWASP Top 10 client-side issues.</p>
+
+        <div class="examples">
+            <h3>Try These Examples:</h3>
+            <button class="example-button" onclick="loadExample('xss')">XSS Example</button>
+            <button class="example-button" onclick="loadExample('eval')">Code Injection</button>
+            <button class="example-button" onclick="loadExample('inline')">Inline Events</button>
+            <button class="example-button" onclick="loadExample('storage')">Storage Issues</button>
+        </div>
+
+        <textarea id="code_snippet" placeholder="Paste your HTML/JS code here..."></textarea>
+        <button id="scanButton" onclick="scanCode()">Scan Code</button>
+
+        <div id="results"></div>
+
+        <div class="team-info">
+            <p>Developed by Team Techie Foodies for Hack 4 Mini 2.0</p>
+            <p>Theme: Cybersecurity & Digital Privacy</p>
+        </div>
+    </div>
+
+    <script>
+        const examples = {
+            xss: `&lt;html&gt;
+&lt;body&gt;
+    &lt;img src="x" onerror="alert('XSS!')"&gt;
+    &lt;a href="javascript:alert('XSS in href')"&gt;Click me&lt;/a&gt;
+    &lt;div onclick="alert('Inline event handler')"&gt;Click me too&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;`,
+            eval: `// Dangerous code execution
+var userInput = "alert('Code injection!')";
+eval(userInput);
+
+// Implied eval
+setTimeout("alert('Another injection')", 100);`,
+            inline: `&lt;div id="outputDiv"&gt;&lt;/div&gt;
+&lt;input id="userInput" type="text" onkeyup="updateOutput(this.value)" placeholder="Type something..."&gt;
+
+&lt;script&gt;
+function updateOutput(data) {
+    // This demonstrates direct, unescaped insertion into DOM, which can lead to XSS
+    document.getElementById('outputDiv').innerHTML = 'You typed: ' + data;
+}
+&lt;\\/script&gt;`,
+            storage: `// Potentially insecure storage usage
+localStorage.setItem('userToken', 'sensitive-auth-token');
+document.cookie = 'sessionId=12345; path=/';
+
+// Accessing cookies without security considerations
+var allCookies = document.cookie;`
+        };
+
+        function loadExample(type) {
+            const textarea = document.getElementById('code_snippet');
+            textarea.value = examples[type] || '';
+            textarea.focus();
+        }
+
+        async function scanCode() {
+            const codeSnippet = document.getElementById('code_snippet').value;
+            const resultsDiv = document.getElementById('results');
+            const scanButton = document.getElementById('scanButton');
+
+            if (!codeSnippet.trim()) {
+                resultsDiv.innerHTML = '<div class="error-message">Please enter some code to scan.</div>';
+                return;
+            }
+
+            scanButton.disabled = true;
+            scanButton.textContent = 'Scanning...';
+            resultsDiv.innerHTML = '<div class="loading">Scanning code... Please wait.</div>';
+
+            try {
+                const response = await fetch('/scan', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `code_snippet=${encodeURIComponent(codeSnippet)}`
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                displayResults(data);
+
+            } catch (error) {
+                console.error('Error during scan:', error);
+                resultsDiv.innerHTML = `<div class="error-message">
+                    <strong>Scan Error:</strong> ${error.message}<br>
+                    Please check the console for more details and try again.
+                </div>`;
+            } finally {
+                scanButton.disabled = false;
+                scanButton.textContent = 'Scan Code';
+            }
+        }
+
+        function displayResults(data) {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '';
+
+            if (data.findings && data.findings.length > 0) {
+                const findingsHeader = document.createElement('h2');
+                findingsHeader.textContent = `Scan Results: ${data.findings.length} Issue(s) Detected`;
+                resultsDiv.appendChild(findingsHeader);
+
+                const findingsList = document.createElement('ul');
+                findingsList.className = 'findings-list';
+
+                data.findings.forEach(finding => {
+                    const listItem = document.createElement('li');
+                    listItem.className = `finding-item ${(finding.severity || 'low').toLowerCase()}`;
+                    
+                    let itemHTML = `
+                        <h3>${finding.type} (Severity: ${finding.severity || 'Low'})</h3>
+                        <p><strong>Detail:</strong> ${finding.detail}</p>
+                    `;
+                    
+                    if (finding.line) {
+                        itemHTML += `<p><strong>Line:</strong> ${finding.line}</p>`;
+                    }
+                    if (finding.column) {
+                        itemHTML += `<p><strong>Column:</strong> ${finding.column}</p>`;
+                    }
+                    
+                    itemHTML += `<p><strong>Affected Code:</strong></p>
+                        <pre>${escapeHtml(finding.code_snippet || 'N/A')}</pre>`;
+                    
+                    if (finding.ruleId) {
+                        itemHTML += `<p style="font-size:0.8em; color:#777;">ESLint Rule: ${finding.ruleId}</p>`;
+                    }
+                    
+                    listItem.innerHTML = itemHTML;
+                    findingsList.appendChild(listItem);
+                });
+                
+                resultsDiv.appendChild(findingsList);
+            } else {
+                const noFindingsDiv = document.createElement('div');
+                noFindingsDiv.className = 'no-findings';
+                noFindingsDiv.innerHTML = `
+                    <h2>Scan Results: Clean ✅</h2>
+                    <p>No common client-side vulnerabilities detected in the provided code snippet.</p>
+                `;
+                resultsDiv.appendChild(noFindingsDiv);
+            }
+
+            if (data.domPurifyDemo) {
+                const domPurifyDemoDiv = document.createElement('div');
+                domPurifyDemoDiv.className = 'dompurify-demo';
+                domPurifyDemoDiv.innerHTML = `
+                    <h2>XSS Remediation Example (with DOMPurify)</h2>
+                    <p>This demonstrates how DOMPurify can sanitize potentially malicious HTML input.</p>
+                    <div class="code-box">
+                        <h4>Original (Potentially Vulnerable) HTML:</h4>
+                        <pre>${escapeHtml(data.domPurifyDemo.original)}</pre>
+                    </div>
+                    <div class="code-box">
+                        <h4>Sanitized (Safe) HTML by DOMPurify:</h4>
+                        <pre>${escapeHtml(data.domPurifyDemo.sanitized)}</pre>
+                    </div>
+                    <p><strong>Notice:</strong> Dangerous attributes like <code>onerror</code> and <code>javascript:</code> URLs have been removed to prevent XSS attacks.</p>
+                `;
+                resultsDiv.appendChild(domPurifyDemoDiv);
+            }
+        }
+
+        function escapeHtml(text) {
+            if (typeof text !== 'string') return '';
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+        }
+
+        document.getElementById('code_snippet').addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                scanCode();
+            }
+        });
+    </script>
+</body>
+</html>
